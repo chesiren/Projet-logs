@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <link rel="stylesheet" href="styledev.css">
+	<link rel="stylesheet" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="split left">
+	<div class="centered logs">
+		<a href="csvconverter.html" style="color: white">csv converter</a>
+		<div id="myProgress">
+			<div id="myBar"></div>
+		</div>
+		<div id="here" name="here" style="height: 100%; color: black; text-align: left; background-color: white;overflow-y: scroll;margin-top: 10px"></div>
+		<textarea id="here2" name="here2" rows="10"></textarea>
+	</div>
+</div>
+
+<div class="split right">
+  <div class="centered">
+    <div class="bloc">
+		Chargement d'un fichier de log
+		<hr>
+		Lire <input type="number" id="maxlines" value="20"> lignes de
+		<input type="file" id="infile">.
+		<input type="button" id="start" value="Procéder">
+		<!--<div id="T1" style="border:0px solid black;width:300;height:100px;padding:5"></div> 
+		<button onclick="table_maker();">table</button>-->
+	</div>
+	<div class="bloc">
+	Système de recherche de log
+	<hr>
+	<div class="slidecontainer">
+	  <input type="number" id="hours" class="time">
+	  <input type="number" id="minutes" class="time">
+	  <input type="number" id="seconds" class="time"><br>
+	  <input type="range" min="1" max="1440" value="500" class="slider" id="sliderrange">
+	  <input type="button" id="timeapply" value="Changer l'horaire">
+	</div>
+	<hr>
+	<!--
+	192.168.58.1,10,,,1000000103,em7,match,block,in,4,0x0,,47,30086,0,
+	none,17,udp,129,114.246.194.120,78.41.166.42,20000,31783,109<br>
+	<hr>-->
+	<div style="color: Fuchsia">
+	Host <input id="host" type="number" placeholder="192.168.58.1"><br>
+	</div>
+	Nombre 1 <input id="nombre1" type="number" placeholder="10"><br>
+	Inconnu 1 <input id="inconnu1" type="text" placeholder=""><br>
+	Inconnu 2 <input id="inconnu2" type="text" placeholder=""><br>
+	Nombre 2 <input id="nombre2" type="number" placeholder="1000000103"><br>
+	<div style="color: deepskyblue">
+	Interface <input id="interface" type="text" placeholder="em7"><br>
+	Match <input id="match" type="text" placeholder="match"><br>
+	Interaction <input id="interaction" type="text" placeholder="block/pass"><br>
+	<!--Interaction: 
+	<input type="checkbox" id="block" name="block" value="block" checked>block
+	<input type="checkbox" id="pass" name="pass" value="pass" checked>pass<br>-->
+	Entrant <input id="entrant" type="text" placeholder="in"><br>
+	</div>
+	<div style="color: orange">
+	IPV <input id="ipv" type="number" placeholder="4"><br>
+	</div>
+	Code <input id="code" type="text" placeholder="0x0"><br>
+	Inconnu 3 <input id="inconnu3" type="text" placeholder=""><br>
+	Nombre 4 <input id="nombre4" type="number" placeholder="47"><br>
+	Nombre 5 <input id="nombre5" type="number" placeholder="30086"><br>
+	Nombre 6 <input id="nombre6" type="number" placeholder="0"><br>
+	<div style="color: yellowgreen">
+	Statut <input id="statut" type="number" placeholder="none"><br>
+	</div>
+	Nombre 7 <input id="nombre7" type="number" placeholder="17"><br>
+	<div style="color: green">
+	Protocole <input id="protocole" type="number" placeholder="udp"><br>
+	</div>
+	Nombre 8 <input id="nombre8" type="number" placeholder="129"><br>
+	<div style="color: red">
+	IP source <input id="ipsource" type="number" placeholder="114.246.194.120"><br>
+	IP destination <input id="ipdestination" type="number" placeholder="78.41.166.42"><br>
+	</div>
+	<div style="color: orangered">
+	Port source <input id="portsource" type="number" placeholder="20000"><br>
+	Port destination <input id="portdestination" type="number" placeholder="31783"><br>
+	</div>
+	Nombre 11 <input id="nombre11" type="number" placeholder="109"><br>
+	<hr>
+	<input type="button" id="search" value="Rechercher">
+	</div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
