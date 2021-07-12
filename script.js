@@ -1,8 +1,7 @@
 var here = document.getElementById('here');
-var here2 = document.getElementById('here2');
 var pbar = document.getElementById("myBar");
 
-var host = document.getElementById('host');
+//var host = document.getElementById('host');
 var nombre1 = document.getElementById('nombre1');
 var inconnu1 = document.getElementById('inconnu1');
 var inconnu2 = document.getElementById('inconnu2');
@@ -196,7 +195,8 @@ function convertjson(content) {
 	
 	var addmore = 0;
 	var counting = 0;
-	storage = "";
+	storage = "<table>";
+	
 	// current/max = (current x (100/max))/(max x (100/max)) = 16/100
 	pbar.style.width = "0%";
 	var pbarsize = 0;
@@ -231,7 +231,7 @@ function convertjson(content) {
 			//console.log(typeof statut.value);
 			//console.log(statut.value);
 			//console.log(obj.Status);
-			if ( host.value != '' && host.value != obj.Host) { addmore++; continue; }
+			//if ( host.value != '' && host.value != obj.Host) { addmore++; continue; }
 			if ( inconnu1.value != '' && inconnu1.value != obj.Inconnu1) { addmore++; continue; }
 			if ( inconnu2.value != '' && inconnu2.value != obj.Inconnu2) { addmore++; continue; }
 			if ( nombre2.value != '' && nombre2.value != obj.Nombre2) { addmore++; continue; }
@@ -259,6 +259,7 @@ function convertjson(content) {
 			counting++;
 		}
 	}
+	storage += "</table>";
 	if (counting == 0) {
 		if (offsetlines) {
 			DisplayLog(1);
@@ -272,34 +273,41 @@ function convertjson(content) {
 	
 	//console.log(counting);
 	//console.log(addmore);
-	//here2.value = log1;
 }
 
 function SendLine(obj) {
-	console.log("hello");
-	storage += "<div class='time'>" + obj.Time + " |</div>&nbsp;<span style='color:fuchsia'>" + obj.Host + "</span>&nbsp;";
-	storage += "<span>" + obj.Nombre1 + "</span>&nbsp;";
-	storage += "<span>" + obj.Inconnu1 + "</span>&nbsp;";
-	storage += "<span>" + obj.Inconnu2 + "</span>&nbsp;";
-	storage += "<span>" + obj.Nombre2 + "</span>&nbsp;";
-	storage += "<span style='color:deepskyblue'>" + obj.Interface + "</span>&nbsp;";
-	storage += "<span style='color:deepskyblue'>" + obj.Match + "</span>&nbsp;";
-	storage += "<span style='color:deepskyblue'>" + obj.Interaction + "</span>&nbsp;";
-	storage += "<span style='color:deepskyblue'>" + obj.Entrant + "</span>&nbsp;";
-	storage += "<span style='color:orange'>" + obj.IPV + "</span>&nbsp;";
-	storage += "<span>" + obj.Code + "</span>&nbsp;";
-	storage += "<span>" + obj.Inconnu3 + "</span>&nbsp;";
-	storage += "<span>" + obj.Nombre4 + "</span>&nbsp;";
-	storage += "<span>" + obj.Nombre5 + "</span>&nbsp;";
-	storage += "<span>" + obj.Nombre6 + "</span>&nbsp;";
-	storage += "<span style='color:yellowgreen'>" + obj.Status + "</span>&nbsp;";
-	storage += "<span>" + obj.Nombre7 + "</span>&nbsp;";
-	storage += "<span style='color:green'>" + obj.Protocole + "</span>&nbsp;";
-	storage += "<span>" + obj.Nombre8 + "</span>&nbsp;";
-	storage += "<span style='color:red'>" + obj.IPsource + "</span>&nbsp;";
-	storage += "<span style='color:green'>" + obj.IPdestination + "</span>&nbsp;";
-	storage += "<span style='color:orangered'>" + obj.Portsource + "</span>&nbsp;";
-	storage += "<span style='color:green'>" + obj.Portdestination + "</span>&nbsp;<br>";
+	storage += "<tr>";
+	storage += "<td><div class='time'>" + obj.Time + " |</div></td>";
+	//storage += "<td><span style='color:fuchsia'>" + obj.Host + "</span></td>";
+	storage += "<td><span>" + obj.Nombre1 + "</span></td>";
+	storage += "<td><span>" + obj.Inconnu1 + "</span></td>";
+	storage += "<td><span>" + obj.Inconnu2 + "</span></td>";
+	storage += "<td><span>" + obj.Nombre2 + "</span></td>";
+	storage += "<td><span style='color:deepskyblue'>" + obj.Interface + "</span></td>";
+	storage += "<td><span style='color:deepskyblue'>" + obj.Match + "</span></td>";
+	storage += "<td><span style='color:deepskyblue'>" + obj.Interaction + "</span></td>";
+	storage += "<td><span style='color:deepskyblue'>" + obj.Entrant + "</span></td>";
+	storage += "<td><span style='color:orange'>" + obj.IPV + "</span></td>";
+	storage += "<td><span>" + obj.Code + "</span></td>";
+	storage += "<td><span>" + obj.Inconnu3 + "</span></td>";
+	storage += "<td><span>" + obj.Nombre4 + "</span></td>";
+	storage += "<td><span>" + obj.Nombre5 + "</span></td>";
+	storage += "<td><span>" + obj.Nombre6 + "</span></td>";
+	storage += "<td><span style='color:yellowgreen'>" + obj.Status + "</span></td>";
+	if (obj.IPV == 4) {
+		storage += "<td><span>" + obj.Nombre7 + "</span></td>";
+		storage += "<td><span style='color:green'>" + obj.Protocole + "</span></td>";
+		storage += "<td><span>" + obj.Nombre8 + "</span></td>";
+		storage += "<td><span style='color:red'>" + obj.IPsource + "/" + obj.Portsource + "</span></td>";
+		storage += "<td><span style='color:green'>" + obj.IPdestination + "/" + obj.Portdestination + "</span></td>";
+	} else if (obj.IPV == 6) {
+		storage += "<td><span>-</span></td>";
+		storage += "<td><span style='color:green'>-</span></td>";
+		storage += "<td><span>" + obj.IPdestination + "</span></td>";
+		storage += "<td><span style='color:red'>" + obj.Nombre7 + "/" + obj.Nombre8 + "</span></td>";
+		storage += "<td><span style='color:green'>" + obj.Protocole + "/" + obj.IPsource + "</span></td>";
+	}
+	storage += "</tr>";
 }
 
 var i = 0;
