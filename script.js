@@ -1,7 +1,6 @@
 var here = document.getElementById('here');
 var pbar = document.getElementById("myBar");
 
-//var host = document.getElementById('host');
 var nombre1 = document.getElementById('nombre1');
 var inconnu1 = document.getElementById('inconnu1');
 var inconnu2 = document.getElementById('inconnu2');
@@ -28,26 +27,26 @@ var nombre11 = document.getElementById('nombre11');
 
 var slider = document.getElementById("sliderrange");
 
-var hours = Math.floor(slider.value / 60);
-var minutes = slider.value % 60;
+var hours = Math.floor(slider.value / 3600);
+var minutes = Math.floor(slider.value / 60) % 60;
 var seconds = slider.value % 60;
 
 var hourOutput = $("#hours")[0];
 var minuteOutput = $("#minutes")[0];
 var secondsOutput = $("#seconds")[0];
 
-var hours = Math.floor(slider.value / 60);
-var minutes = slider.value % 60;
-var seconds = (slider.value * 2) % 60;
+var hours = Math.floor(slider.value / 3600);
+var minutes = Math.floor(slider.value / 60) % 60;
+var seconds = slider.value % 60;
 
 hourOutput.value = hours;
 minuteOutput.value = minutes
 secondsOutput.value = seconds
 
 $('.slider').on('input', function(){
-	hours = Math.floor(slider.value / 60);
-	minutes = slider.value % 60;
-	seconds = (slider.value * 2) % 60;
+	hours = Math.floor(slider.value / 3600);
+	minutes = Math.floor(slider.value / 60) % 60;
+	seconds = slider.value % 60;
 	hourOutput.value = hours;
 	minuteOutput.value = minutes;
 	secondsOutput.value = seconds;
@@ -65,10 +64,8 @@ function DisplayLog(addoffset) {
 	curoffset += addoffset;
 	var offset = 50000 * curoffset;
     var lineno = 1;
-    // readSomeLines is defined below.
 	grab = "";
     readSomeLines(file, maxlines, offset, function(line) {
-        //console.log("Line" + lineno + ": " + line);
         grab += "Line" + (lineno++) + ": " + line;
     }, function onComplete() {
         console.log('Read all lines');
@@ -103,7 +100,6 @@ document.getElementById('timeapply').onclick = function() {
 function readSomeLines(file, maxlines, offset, forEachLine, onComplete) {
     var CHUNK_SIZE = 50000; // 50kb, arbitrarily chosen.
     var decoder = new TextDecoder();
-    //var offset = 0;
     var linecount = 0;
     var linenumber = 0;
     var results = '';
@@ -149,36 +145,17 @@ function readSomeLines(file, maxlines, offset, forEachLine, onComplete) {
         fr.readAsArrayBuffer(slice);
     }
 }
-/*
-var txt ='abc123, 234 pqr,xyz "type"\nbc123, 234 pqr,xyz "type"\nc123, 234pqr,xyz "type"\nn23, 234 pqr,xyz "type"\naj23, 234 pqr,xyz "type"'
-function table_maker(){
-var rows=txt.split('\n'), r, cells, c, j, i=0;
-var table='<table>';
-while(r=rows[i++]){
-table+='<tr>';
-cells=r.split(',');
-j=0;
-while(c=cells[j++]){
-table+=('<td>'+c+'</td>');
-}
-table+='</tr>';
-}
-table+='</table>';
-//return table;
-document.getElementById("T1").innerHTML=table;
-}
-*/
 
 var log1;
 var storage;
 function convertjson(content) {
-	//var str = "Line Month Day Time IP Filterlog Values\n" + content;
+	
 	var str = "Line Month Day Time Host Filterlog Nombre1,Inconnu1,Inconnu2,Nombre2,Interface,Match,Interaction,Entrant,IPV,Code,Inconnu3,Nombre4,Nombre5,Nombre6,Status,Nombre7,Protocole,Nombre8,IPsource,IPdestination,Portsource,Portdestination,Nombre11\n" + content;
-	//var cells = str.split('\n').map(function (el) { return el.split(/\s+/); });
+	
 	var cells = str.split('\n').map(function (el) { return el.split(/[ ,]/); });
-	//console.log( "CELLS: ", cells );
+	
 	var headings = cells.shift();
-	//console.log( "HEADINGS: ", headings );
+	
 	var out = cells.map(function (el) {
 	  let obj = {};
 	  for (var i = 0, l = el.length; i < l; i++) {
@@ -195,32 +172,25 @@ function convertjson(content) {
 	
 	var addmore = 0;
 	var counting = 0;
-	storage = "<table>";
+	storage = "<table class='tbl-log'>";
 	
-	// current/max = (current x (100/max))/(max x (100/max)) = 16/100
 	pbar.style.width = "0%";
 	var pbarsize = 0;
 	var offsetlines = false;
 	for(var i = 0; i < out.length; i++) {
-		//pbar.style.width = (i*(100/out.length)) + "%";
 		pbarsize = (i*(100/out.length));
-		//console.log(pbarsize);
 		move( pbarsize );
-		var obj = out[i];
 		
-		//console.log( obj );	
+		var obj = out[i];
+			
 		if ( typeof obj.Month !== 'undefined' ) {
 			if ( obj.Line != 'Line1:' ) {
 				var time = (obj.Time).split(':');
-				if (Number(time[0]) < hours) {
-					offsetlines = true;
-					continue;
-				}
-				if (Number(time[1]) < minutes) {
-					offsetlines = true;
-					continue;
-				}
-				if (Number(time[2]) < seconds) {
+				
+				var date1 = new Date(2021, 1, 1, Number(time[0]), Number(time[1]), Number(time[2]))
+				var date2 = new Date(2021, 1, 1, hours, minutes, seconds)
+
+				if(date1.getTime() < date2.getTime()){
 					offsetlines = true;
 					continue;
 				}
@@ -228,10 +198,7 @@ function convertjson(content) {
 				continue;
 			}
 			
-			//console.log(typeof statut.value);
-			//console.log(statut.value);
-			//console.log(obj.Status);
-			//if ( host.value != '' && host.value != obj.Host) { addmore++; continue; }
+			if ( nombre1.value != '' && nombre1.value != obj.Nombre1) { addmore++; continue; }
 			if ( inconnu1.value != '' && inconnu1.value != obj.Inconnu1) { addmore++; continue; }
 			if ( inconnu2.value != '' && inconnu2.value != obj.Inconnu2) { addmore++; continue; }
 			if ( nombre2.value != '' && nombre2.value != obj.Nombre2) { addmore++; continue; }
@@ -270,42 +237,52 @@ function convertjson(content) {
 	} else {
 		here.innerHTML = storage;
 	}
-	
-	//console.log(counting);
-	//console.log(addmore);
 }
 
 function SendLine(obj) {
 	storage += "<tr>";
 	storage += "<td><div class='time'>" + obj.Time + " |</div></td>";
-	//storage += "<td><span style='color:fuchsia'>" + obj.Host + "</span></td>";
-	storage += "<td><span>" + obj.Nombre1 + "</span></td>";
-	storage += "<td><span>" + obj.Inconnu1 + "</span></td>";
-	storage += "<td><span>" + obj.Inconnu2 + "</span></td>";
-	storage += "<td><span>" + obj.Nombre2 + "</span></td>";
-	storage += "<td><span style='color:deepskyblue'>" + obj.Interface + "</span></td>";
-	storage += "<td><span style='color:deepskyblue'>" + obj.Match + "</span></td>";
-	storage += "<td><span style='color:deepskyblue'>" + obj.Interaction + "</span></td>";
-	storage += "<td><span style='color:deepskyblue'>" + obj.Entrant + "</span></td>";
-	storage += "<td><span style='color:orange'>" + obj.IPV + "</span></td>";
-	storage += "<td><span>" + obj.Code + "</span></td>";
-	storage += "<td><span>" + obj.Inconnu3 + "</span></td>";
-	storage += "<td><span>" + obj.Nombre4 + "</span></td>";
-	storage += "<td><span>" + obj.Nombre5 + "</span></td>";
-	storage += "<td><span>" + obj.Nombre6 + "</span></td>";
-	storage += "<td><span style='color:yellowgreen'>" + obj.Status + "</span></td>";
+	if ( obj.Filterlog == "dhcpd:") {
+		storage += "<td colspan='4'><span>" + obj.Nombre1 + "</span></td>";
+		storage += "<td><span>" + obj.Inconnu1 + "</span></td>";
+		storage += "<td colspan='4'><span class='c19'>" + obj.Inconnu2 + "</span></td>";
+		storage += "<td><span>" + obj.Nombre2 + "</span></td>";
+		storage += "<td colspan='4'><span class='c21'>" + obj.Interface + "</span></td>";
+		storage += "<td><span>" + obj.Match + "</span></td>";
+		storage += "<td><span class='c5'>" + obj.Interaction + "</span></td>";
+		storage += "</tr>";
+		return;
+	} else {
+		storage += "<td><span class='c1'>" + obj.Nombre1 + "</span></td>";
+		storage += "<td><span class='c2'>" + obj.Inconnu1 + "</span></td>";
+		storage += "<td><span class='c3'>" + obj.Inconnu2 + "</span></td>";
+		storage += "<td><span class='c4'>" + obj.Nombre2 + "</span></td>";
+		storage += "<td><span class='c5'>" + obj.Interface + "</span></td>";
+		storage += "<td><span class='c6'>" + obj.Match + "</span></td>";
+		storage += "<td><span class='c7'>" + obj.Interaction + "</span></td>";
+	}
+	storage += "<td><span class='c8'>" + obj.Entrant + "</span></td>";
+	storage += "<td><span class='c9'>" + obj.IPV + "</span></td>";
+	storage += "<td><span class='c10'>" + obj.Code + "</span></td>";
+	storage += "<td><span class='c11'>" + obj.Inconnu3 + "</span></td>";
+	storage += "<td><span class='c12'>" + obj.Nombre4 + "</span></td>";
+	storage += "<td><span class='c13'>" + obj.Nombre5 + "</span></td>";
+	storage += "<td><span class='c14'>" + obj.Nombre6 + "</span></td>";
+	storage += "<td><span class='c15'>" + obj.Status + "</span></td>";
 	if (obj.IPV == 4) {
-		storage += "<td><span>" + obj.Nombre7 + "</span></td>";
-		storage += "<td><span style='color:green'>" + obj.Protocole + "</span></td>";
-		storage += "<td><span>" + obj.Nombre8 + "</span></td>";
-		storage += "<td><span style='color:red'>" + obj.IPsource + "/" + obj.Portsource + "</span></td>";
-		storage += "<td><span style='color:green'>" + obj.IPdestination + "/" + obj.Portdestination + "</span></td>";
+		storage += "<td><span class='c16'>" + obj.Nombre7 + "</span></td>";
+		storage += "<td><span class='c17'>" + obj.Protocole + "</span></td>";
+		storage += "<td><span class='c18'>" + obj.Nombre8 + "</span></td>";
+		storage += "<td><span class='c19'>" + obj.IPsource + "</span> : <span class='c20'>" + obj.Portsource + "</span></td>";
+		storage += "<td><span class='c21'>" + obj.IPdestination + "</span> : <span class='c22'>" + obj.Portdestination + "</span></td>";
+		storage += "<td><span class='c23'>" + obj.Nombre11 + "</span></td>";
 	} else if (obj.IPV == 6) {
-		storage += "<td><span>-</span></td>";
-		storage += "<td><span style='color:green'>-</span></td>";
-		storage += "<td><span>" + obj.IPdestination + "</span></td>";
-		storage += "<td><span style='color:red'>" + obj.Nombre7 + "/" + obj.Nombre8 + "</span></td>";
-		storage += "<td><span style='color:green'>" + obj.Protocole + "/" + obj.IPsource + "</span></td>";
+		storage += "<td><span class='c16'>-</span></td>";
+		storage += "<td><span class='c17'>-</span></td>";
+		storage += "<td><span class='c18'>" + obj.IPdestination + "</span></td>";
+		storage += "<td><span class='c19'>" + obj.Nombre7 + "</span> : <span class='c20'>" + obj.Nombre8 + "</span></td>";
+		storage += "<td><span class='c21'>" + obj.Protocole + "</span> : <span class='c22'>" + obj.IPsource + "</span></td>";
+		storage += "<td><span class='c23'>" + obj.Nombre11 + "</span></td>";
 	}
 	storage += "</tr>";
 }
@@ -330,6 +307,28 @@ function move(by) {
   }
 }
 
+var cps = document.querySelectorAll("input[type=color]")
+var sheet = document.styleSheets[2]
+
+window.addEventListener('load', function() {
+	for(var i = 0; i < cps.length; i++) {
+		var cp = localStorage.getItem(cps[i].id);
+		if (cp === null) {
+			localStorage.setItem(cps[i].id, cps[i].value);
+		} else {
+			cps[i].value = cp;
+			sheet.insertRule(".c" + (i+1) + " { color: " + cp + "; }", sheet.cssRules.length);
+		}
+	}
+})
+
+for(var i = 0; i < cps.length; i++) {
+	cps[i].onchange = function() {
+		localStorage.setItem(this.id, this.value);
+		sheet.insertRule(".c" + (this.id).substring(2) + " { color: " + this.value + "; }", sheet.cssRules.length);
+	}
+}
+
 function downloadContent(name, content) {
   var atag = document.createElement("a");
   var file = new Blob([content], {type: 'text/csv'});
@@ -337,5 +336,3 @@ function downloadContent(name, content) {
   atag.download = name;
   atag.click();
 }
-
-//downloadContent("t1.csv","hello world");

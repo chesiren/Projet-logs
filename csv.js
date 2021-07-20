@@ -10,7 +10,21 @@ function ConvertCSV() {
 	var fr = new FileReader();
 	
 	fr.onload = function(){
-		downloadContent("test.csv", (fr.result).split(/[ ,]/).toString() );
+		var storage = "";
+		var splitted = (fr.result).replace(/[ ]/g, ",");
+		
+		var lines = splitted.split('\r\n');
+		for(var i = 0; i < lines.length; i++){
+			
+			var fix = lines[i].split(/[ ,]/);
+			if ( fix[13] == 4 || fix[13] == 6) {
+				fix.splice(0, 2); // day & month
+				fix.splice(1, 2); // host & filterlog
+			}
+			storage += fix.toString()+"\r\n";
+		}
+		
+		downloadContent("test.csv", storage );
 	} 
 	  
 	fr.readAsText(file);

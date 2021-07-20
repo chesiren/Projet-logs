@@ -91,6 +91,7 @@ input[type="checkbox"] {
 div .time {
 	background-color: lightgrey;
 	display: inline-block;
+	width: 80px;
 }
 
 #myProgress {
@@ -105,7 +106,98 @@ div .time {
   background-color: #04AA6D;
 }
 
-.time {
-	width: 80px; 
+.clock {
+	width: 30px; 
 	display:inline-block;
+}
+
+.c1 {
+	color: black;
+}
+.c2 {
+	color: black;
+}
+.c3 {
+	color: black;
+}
+.c4 {
+	color: black;
+}
+.c5 {
+	color: deepskyblue;
+}
+.c6 {
+	color: deepskyblue;
+}
+.c7 {
+	color: deepskyblue;
+}
+.c8 {
+	color: deepskyblue;
+}
+.c9 {
+	color: deeppink;
+}
+.c10 {
+	color: black;
+}
+.c11 {
+	color: black;
+}
+.c12 {
+	color: black;
+}
+.c13 {
+	color: black;
+}
+.c14 {
+	color: black;
+}
+.c15 {
+	color: yellowgreen;
+}
+.c16 {
+	color: black;
+}
+.c17 {
+	color: green;
+}
+.c18 {
+	color: black;
+}
+.c19 {
+	color: red;
+}
+.c20 {
+	color: darkred;
+}
+.c21 {
+	color: orange;
+}
+.c22 {
+	color: orangered;
+}
+.c23 {
+	color: black;
+}
+
+.tbl-recherche input[type="color"] {
+	width: 16px;
+	height: 16px;
+	padding: 1px;
+	border: none;
+	margin-right: 8px;
+}
+
+.tbl-recherche tr, .tbl-recherche td {
+	padding: 0;
+	margin: 0;
+}
+
+.tbl-recherche input[type="text"], .tbl-recherche input[type="number"] {
+	margin: 0;
+}
+
+.tbl-log, .tbl-recherche {
+	width: 100%;
 }
